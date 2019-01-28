@@ -27,8 +27,7 @@ public class ChatController {
         Optional.ofNullable(chatService.getChatDetail(chatRoomId))
                 .orElseThrow(() -> new Exception("chat room is not found"));
 
-        return chatService.registerChat(chat);
-
+        return chatService.registerChat(chatRoomId, chat);
     }
 
 }

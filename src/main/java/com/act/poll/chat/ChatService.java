@@ -31,7 +31,8 @@ public class ChatService {
                         .build());
     }
 
-    public Chat registerChat(Chat chat) {
-        return null;
+    public Chat registerChat(String chatRoomId, Chat chat) {
+        chat.setChatRoomId(chatRoomId);
+        return chatRepository.save(chat);
     }
 }

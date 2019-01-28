@@ -1,11 +1,13 @@
 package com.act.poll.chat;
 
-import com.act.poll.chatroom.ChatRoomRepository;
 import com.act.poll.chatroom.ChatDetail;
 import com.act.poll.chatroom.ChatRoom;
+import com.act.poll.chatroom.ChatRoomRepository;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -13,6 +15,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -28,6 +31,8 @@ public class ChatServiceTest {
     private ChatRepository mockChatRepository;
     @Mock
     private ChatRoomRepository mockChatRoomRepository;
+    @Captor
+    private ArgumentCaptor<Chat> chatCaptor;
 
     @Test
     public void givenFoundIsEmpty_whenGetChatRoomDetail_thenReturnEmptyChatRoom() {
@@ -88,7 +93,18 @@ public class ChatServiceTest {
     }
 
     @Test
-    public void whenRegisterChat_() {
+    public void whenRegisterChat_thenSaveChat() {
+        subject.registerChat(
+                "any-chatroom-id",
+                Chat.builder()
+                        .writer(User.builder().id("any-user-id").name("any-user-name").build())
+                        .message("any-message")
+                        .build()
+        );
 
+        then(mockChatRepository).should().save(chatCaptor.capture());
+        Chat chat = chatCaptor.getValue();
+        assertThat(chat.getWriter()).isEqualTo(User.builder().id("any-user-id").name("any-user-name").build());
+        assertThat(chat.getMessage()).isEqualTo("any-message");
     }
 }

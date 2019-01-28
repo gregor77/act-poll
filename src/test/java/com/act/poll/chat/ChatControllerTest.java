@@ -3,7 +3,6 @@ package com.act.poll.chat;
 import com.act.poll.chatroom.ChatDetail;
 import com.act.poll.chatroom.ChatRoom;
 import org.assertj.core.util.Lists;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -20,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.when;
 
@@ -80,7 +80,6 @@ public class ChatControllerTest {
                 .isEqualTo("chat room is not found");
     }
 
-    @Ignore
     @Test
     public void whenRegisterChat_thenAddChat() {
         when(mockChatService.getChatDetail("any-chatroom-id"))
@@ -97,7 +96,7 @@ public class ChatControllerTest {
                 ChatRoom.class
         );
 
-        then(mockChatService).should().registerChat(chatCaptor.capture());
+        then(mockChatService).should().registerChat(eq("any-chatroom-id"), chatCaptor.capture());
         Chat chat = chatCaptor.getValue();
         assertThat(chat.getWriter())
                 .isEqualTo(User.builder().id("any-writer-id").name("any-writer-name").build());
