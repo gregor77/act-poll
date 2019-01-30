@@ -95,8 +95,8 @@ public class ChatServiceTest {
     @Test
     public void whenRegisterChat_thenSaveChat() {
         subject.registerChat(
-                "any-chatroom-id",
                 Chat.builder()
+                        .chatRoomId("any-chatroom-id")
                         .writer(User.builder().id("any-user-id").name("any-user-name").build())
                         .message("any-message")
                         .build()

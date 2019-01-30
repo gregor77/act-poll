@@ -96,8 +96,9 @@ public class ChatControllerTest {
                 ChatRoom.class
         );
 
-        then(mockChatService).should().registerChat(eq("any-chatroom-id"), chatCaptor.capture());
+        then(mockChatService).should().registerChat(chatCaptor.capture());
         Chat chat = chatCaptor.getValue();
+        assertThat(chat.getChatRoomId()).isEqualTo("any-chat-id");
         assertThat(chat.getWriter())
                 .isEqualTo(User.builder().id("any-writer-id").name("any-writer-name").build());
         assertThat(chat.getMessage()).isEqualTo("any-Chat");
